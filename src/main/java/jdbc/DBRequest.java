@@ -1,12 +1,15 @@
 package jdbc;
 
+import write_to_file.Writer;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBRequest {
-    public static void request(Connection connection) throws SQLException {
+    public static void request(Connection connection) throws SQLException, IOException {
         String selectQuery = "SELECT  " +
                 "r.name AS name, " +
                 "r.lastname AS lastname, " +
@@ -26,6 +29,8 @@ public class DBRequest {
                 "WHERE ro2.resident_id = r.id" +
                 ") < 2 ";
 
+        Writer.openFile();
+
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectQuery)) {
@@ -39,14 +44,22 @@ public class DBRequest {
                 int numbersOfRooms = resultSet.getInt("number_of_rooms");
                 int area = resultSet.getInt("area");
 
-                System.out.println("Name: " + name +
+                String result ="Name: " + name +
                         " Lastname: " + lastname +
                         " Email: " + email +
                         " Address: " + buildingAddress +
                         " Apartment: " + apartment +
                         " Numbers of rooms: " + numbersOfRooms +
-                        " Area: " + area);
+                        " Area: " + area;
+
+                Writer.write(result);
+                System.out.println(result);
+
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }finally {
+            Writer.closeFile();
         }
     }
 }
