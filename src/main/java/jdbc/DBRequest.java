@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBRequest {
+
+    private DBRequest(){}
+
     public static void request(Connection connection) throws SQLException, IOException {
         String selectQuery = "SELECT  " +
                 "r.name AS name, " +
@@ -29,11 +32,9 @@ public class DBRequest {
                 "WHERE ro2.resident_id = r.id" +
                 ") < 2 ";
 
-        Writer.openFile();
-
-
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(selectQuery)) {
+             ResultSet resultSet = statement.executeQuery(selectQuery);
+             Writer writer = new Writer()) {
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
@@ -52,14 +53,9 @@ public class DBRequest {
                         " Numbers of rooms: " + numbersOfRooms +
                         " Area: " + area;
 
-                Writer.write(result);
+                writer.write(result);
                 System.out.println(result);
-
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }finally {
-            Writer.closeFile();
         }
     }
 }
