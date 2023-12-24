@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class DBConnection {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/OSBB_v4";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "0xE11700x11000x11200x10200x5400x5300x10700x6200x6000x10800xWw";
+    private static final String PASSWORD = System.getenv("DB_PASS");
     private static DBConnection instance;
     private Connection connection;
 

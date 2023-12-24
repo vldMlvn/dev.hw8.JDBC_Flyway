@@ -8,8 +8,8 @@ import java.sql.SQLException;
 
 public class App {
     public static void main(String[] args) throws SQLException, IOException {
-        //FlywayMigration.migration();
-        Connection connection = DBConnection.getInstance().getConnection();
-        DBRequest.request(connection);
+        FlywayMigration.migration();
+        // Connection connection = DBConnection.getInstance().getConnection();
+        //DBRequest.request(connection);
     }
 }
